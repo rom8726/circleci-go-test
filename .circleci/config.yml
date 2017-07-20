@@ -2,9 +2,6 @@
 #
 # Check https://circleci.com/docs/2.0/language-go/ for more details
 version: 2
-machine:
-  environment:
-    GOPATH: /go:$PWD:$PWD/vendor
 jobs:
   build:
     docker:
@@ -33,4 +30,4 @@ jobs:
       - run: gb vendor restore
       - run: gb build
       #- run: go get -v -t -d ./...
-      - run: go test -v ./src/...
+      - run: GOPATH=$GOPATH:$PWD:$PWD/vendor; go test -v ./src/...
