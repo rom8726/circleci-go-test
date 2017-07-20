@@ -24,10 +24,9 @@ jobs:
       # specify any bash command here prefixed with `run: `
       - run: go get github.com/constabulary/gb/...
       - run: go get -u github.com/golang/lint/golint
-      - run: go get -u github.com/alecthomas/gometalinter
-      - run: gometalinter --install
-      - run: golint ./src/...
+#      - run: go get -u github.com/alecthomas/gometalinter
+#      - run: gometalinter --install
       - run: gb vendor restore
       - run: gb build
       #- run: go get -v -t -d ./...
-      - run: GOPATH=$GOPATH:$PWD:$PWD/vendor; go test -v ./src/...
+      - run: make test
