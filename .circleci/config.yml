@@ -5,12 +5,6 @@ version: 2
 machine:
   environment:
     GOPATH: $GOPATH:$PWD:$PWD/vendor
-dependencies:
-    override:
-      - go get github.com/constabulary/gb/...
-      - go get -u github.com/golang/lint/golint
-      - go get -u github.com/alecthomas/gometalinter
-      - gometalinter --install
 jobs:
   build:
     docker:
@@ -31,6 +25,10 @@ jobs:
       - checkout
 
       # specify any bash command here prefixed with `run: `
+      - run: go get github.com/constabulary/gb/...
+      - run: go get -u github.com/golang/lint/golint
+      - run: go get -u github.com/alecthomas/gometalinter
+      - run: gometalinter --install
       - run: golint ./src/...
       - run: gb vendor restore
       - run: gb build
