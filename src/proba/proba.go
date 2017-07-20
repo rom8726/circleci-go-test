@@ -10,5 +10,5 @@ func (self *Application) Start() {
 }
 
 func (self *Application) SomeFunc() int {
-	return 3
+	return 33
 }
