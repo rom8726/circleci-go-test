@@ -6,8 +6,9 @@ import (
 	"github.com/garyburd/redigo/redis"
 	"gopkg.in/couchbase/gocb.v1"
 	"gopkg.in/pg.v5"
-	"os/exec"
-	"strings"
+	"os"
+	//"os/exec"
+	//"strings"
 )
 
 const (
@@ -150,12 +151,13 @@ func NewCouchbaseClient() (cluster *gocb.Cluster, bucket *gocb.Bucket, err error
 
 // NewAerospikeClient returns new Aerospike client
 func NewAerospikeClient() (as_client *aerospike.Client, err error) {
-	as_host_out, err := exec.Command("sh", "-c", "docker inspect -f '{{.NetworkSettings.IPAddress }}' aerospike").Output()
-	if err != nil {
-		return nil, err
-	}
-	as_host := string(as_host_out)
-	as_host = strings.Replace(as_host, "\n", "", -1)
+	//as_host_out, err := exec.Command("sh", "-c", "docker inspect -f '{{.NetworkSettings.IPAddress }}' aerospike").Output()
+	//if err != nil {
+	//	return nil, err
+	//}
+	//as_host := string(as_host_out)
+	//as_host = strings.Replace(as_host, "\n", "", -1)
+	as_host := os.Getenv("AEROSPIKE_HOST")
 	fmt.Println(fmt.Sprint("Aerospike host: ", string(as_host)))
 
 	as_client, err = aerospike.NewClientWithPolicyAndHost(nil, &aerospike.Host{
