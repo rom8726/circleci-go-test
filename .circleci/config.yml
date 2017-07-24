@@ -7,6 +7,9 @@ jobs:
     docker:
       # specify the version
       - image: circleci/golang:1.8
+        environment:
+          POSTGRES_USER: circleci
+          POSTGRES_DB: circleci-go-test
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
