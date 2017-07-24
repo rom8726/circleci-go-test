@@ -2,6 +2,12 @@
 	"version": 0,
 	"dependencies": [
 		{
+			"importpath": "github.com/aerospike/aerospike-client-go",
+			"repository": "https://github.com/aerospike/aerospike-client-go",
+			"revision": "186116cc30ea117146f9bd944e5064ffb72ae4ca",
+			"branch": "master"
+		},
+		{
 			"importpath": "github.com/alecthomas/log4go",
 			"repository": "https://github.com/alecthomas/log4go",
 			"revision": "e5dc62318d9bd58682f1dceb53a4b24e8253682f",
@@ -44,6 +50,19 @@
 			"repository": "https://github.com/smartystreets/goconvey",
 			"revision": "9e8dc3f972df6c8fcc0375ef492c24d0bb204857",
 			"branch": "master"
+		},
+		{
+			"importpath": "github.com/yuin/gopher-lua",
+			"repository": "https://github.com/yuin/gopher-lua",
+			"revision": "2243d714d6c94951d8ccca8c851836ff47d401c9",
+			"branch": "master"
+		},
+		{
+			"importpath": "golang.org/x/net/context",
+			"repository": "https://go.googlesource.com/net",
+			"revision": "ab5485076ff3407ad2d02db054635913f017b0ed",
+			"branch": "master",
+			"path": "/context"
 		},
 		{
 			"importpath": "golang.org/x/net/http2",

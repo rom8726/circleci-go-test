@@ -9,6 +9,7 @@ jobs:
       - image: circleci/golang:1.8
       - image: redis
       - image: arungupta/couchbase-server
+      - image: aerospike/aerospike-server
       - image: postgres:9.4.1
         environment:
           POSTGRES_USER: circleci

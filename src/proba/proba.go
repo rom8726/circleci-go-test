@@ -2,15 +2,19 @@ package proba
 
 import (
 	"fmt"
+	"github.com/aerospike/aerospike-client-go"
 	"github.com/garyburd/redigo/redis"
 	"gopkg.in/couchbase/gocb.v1"
 	"gopkg.in/pg.v5"
+	"strconv"
+	"strings"
 )
 
 type Application struct {
-	Database  *pg.DB
-	RedisPool *redis.Pool
-	Couchbase *gocb.Bucket
+	Database        *pg.DB
+	RedisPool       *redis.Pool
+	Couchbase       *gocb.Bucket
+	AerospikeClient *aerospike.Client
 }
 
 func NewApplication() (application Application) {
@@ -26,6 +30,11 @@ func NewApplication() (application Application) {
 	}
 
 	_, application.Couchbase, err = NewCouchbaseClient("127.0.0.1", "test", "")
+	if err != nil {
+		panic(err)
+	}
+
+	application.AerospikeClient, err = NewAerospikeClient([]string{"127.0.0.1:3000"})
 	if err != nil {
 		panic(err)
 	}
@@ -47,6 +56,9 @@ func (self *Application) Close() {
 	if self.Couchbase != nil {
 		self.Couchbase.Close()
 	}
+	if self.AerospikeClient != nil {
+		self.AerospikeClient.Close()
+	}
 }
 
 func (self *Application) SomeFunc() int {
@@ -62,6 +74,20 @@ func (self *Application) RedisFunc() error {
 
 func (self *Application) CouchbaseFunc() error {
 	_, err := self.Couchbase.Upsert("test-key", "test-value", 60)
+	return err
+}
+
+func (self *Application) AerospikeFunc() error {
+	key, err := aerospike.NewKey("test", "test", "test-key")
+	if err != nil {
+		return err
+	}
+	operations := []*aerospike.Operation{
+		aerospike.PutOp(aerospike.NewBin("bin1", 1)),
+		aerospike.PutOp(aerospike.NewBin("bin2", 2)),
+		aerospike.AddOp(aerospike.NewBin("metric", 12)),
+	}
+	_, err = self.AerospikeClient.Operate(nil, key, operations...)
 	return err
 }
 
@@ -121,5 +147,23 @@ func NewCouchbaseClient(host string, bucket_name string, password string) (clust
 	}
 
 	bucket, err = cluster.OpenBucket(bucket_name, password)
+	return
+}
+
+// NewAerospikeClient returns new Aerospike client
+func NewAerospikeClient(nodes []string) (as_client *aerospike.Client, err error) {
+	hosts := []*aerospike.Host{}
+
+	for _, server := range nodes {
+		parts := strings.SplitN(server, ":", 2)
+		port := 3000
+		if len(parts) == 2 {
+			if port, err = strconv.Atoi(parts[1]); err != nil {
+				return
+			}
+		}
+		hosts = append(hosts, &aerospike.Host{Name: parts[0], Port: port})
+	}
+	as_client, err = aerospike.NewClientWithPolicyAndHost(nil, hosts...)
 	return
 }
