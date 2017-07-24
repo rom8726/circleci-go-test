@@ -10,6 +10,7 @@ jobs:
     docker:
       # specify the version
       - image: circleci/golang:1.8
+      - image: postgres:9.4.1
         environment:
           POSTGRES_USER: circleci
           POSTGRES_DB: circleci-go-test
