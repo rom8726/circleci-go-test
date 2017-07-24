@@ -8,6 +8,20 @@
 			"branch": "master"
 		},
 		{
+			"importpath": "github.com/garyburd/redigo/internal",
+			"repository": "https://github.com/garyburd/redigo",
+			"revision": "9e66b83d15a259978be267d0b61838c42c3904e3",
+			"branch": "master",
+			"path": "/internal"
+		},
+		{
+			"importpath": "github.com/garyburd/redigo/redis",
+			"repository": "https://github.com/garyburd/redigo",
+			"revision": "9e66b83d15a259978be267d0b61838c42c3904e3",
+			"branch": "master",
+			"path": "/redis"
+		},
+		{
 			"importpath": "github.com/jinzhu/inflection",
 			"repository": "https://github.com/jinzhu/inflection",
 			"revision": "1c35d901db3da928c72a72d8458480cc9ade058f",

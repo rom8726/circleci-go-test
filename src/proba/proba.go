@@ -2,11 +2,13 @@ package proba
 
 import (
 	"fmt"
+	"github.com/garyburd/redigo/redis"
 	"gopkg.in/pg.v5"
 )
 
 type Application struct {
-	Database *pg.DB
+	Database  *pg.DB
+	RedisPool *redis.Pool
 }
 
 func NewApplication() (application Application) {
@@ -15,6 +17,12 @@ func NewApplication() (application Application) {
 	if err != nil {
 		panic(err)
 	}
+
+	application.RedisPool, err = NewRedisPool("127.0.0.1", 6379, 2)
+	if err != nil {
+		panic(err)
+	}
+
 	return
 }
 
@@ -25,6 +33,9 @@ func (self *Application) Start() {
 func (self *Application) Close() {
 	if self.Database != nil {
 		self.Database.Close()
+	}
+	if self.RedisPool != nil {
+		self.RedisPool.Close()
 	}
 }
 
@@ -46,6 +57,34 @@ func NewPostgreSqlClient(host string, port int, username string, password string
 	// ping
 	_, err = conn.Exec("SELECT 'ping'")
 	if err != nil {
+		return nil, err
+	}
+
+	return
+}
+
+// NewRedisPool initializes pool of connections for Redis
+func NewRedisPool(host string, port int, max_conns int) (pool *redis.Pool, err error) {
+	pool = &redis.Pool{
+		MaxIdle:     max_conns,
+		IdleTimeout: 0,
+		Dial: func() (redis.Conn, error) {
+			c, err := redis.Dial("tcp", fmt.Sprintf("%s:%d", host, port), redis.DialDatabase(0))
+			if err != nil {
+				return nil, err
+			}
+			return c, err
+		},
+	}
+
+	// ping
+	conn := pool.Get()
+	defer conn.Close()
+	reply, err := redis.String(conn.Do("PING"))
+	if err != nil {
+		return nil, err
+	}
+	if reply != "PONG" {
 		return nil, err
 	}
 
