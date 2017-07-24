@@ -8,7 +8,7 @@ jobs:
       # specify the version
       - image: circleci/golang:1.8
       - image: redis
-      - image: couchbase/server
+      - image: arungupta/couchbase-server
       - image: postgres:9.4.1
         environment:
           POSTGRES_USER: circleci
