@@ -1,7 +1,7 @@
 package proba
 
 import (
-	"github.com/chasex/redis-go-cluster"
+	"github.com/garyburd/redigo/redis"
 	. "github.com/smartystreets/goconvey/convey"
 	"testing"
 )
