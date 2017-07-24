@@ -3,12 +3,14 @@ package proba
 import (
 	"fmt"
 	"github.com/garyburd/redigo/redis"
+	"gopkg.in/couchbase/gocb.v1"
 	"gopkg.in/pg.v5"
 )
 
 type Application struct {
 	Database  *pg.DB
 	RedisPool *redis.Pool
+	Couchbase *gocb.Bucket
 }
 
 func NewApplication() (application Application) {
@@ -19,6 +21,11 @@ func NewApplication() (application Application) {
 	}
 
 	application.RedisPool, err = NewRedisPool("127.0.0.1", 6379, 2)
+	if err != nil {
+		panic(err)
+	}
+
+	_, application.Couchbase, err = NewCouchbaseClient("127.0.0.1", "default", "")
 	if err != nil {
 		panic(err)
 	}
@@ -37,6 +44,9 @@ func (self *Application) Close() {
 	if self.RedisPool != nil {
 		self.RedisPool.Close()
 	}
+	if self.Couchbase != nil {
+		self.Couchbase.Close()
+	}
 }
 
 func (self *Application) SomeFunc() int {
@@ -47,6 +57,11 @@ func (self *Application) RedisFunc() error {
 	conn := self.RedisPool.Get()
 	defer conn.Close()
 	_, err := conn.Do("LPUSH", "queue", "start")
+	return err
+}
+
+func (self *Application) CouchbaseFunc() error {
+	_, err := self.Couchbase.Upsert("test-key", "test-value", 60)
 	return err
 }
 
@@ -95,5 +110,16 @@ func NewRedisPool(host string, port int, max_conns int) (pool *redis.Pool, err e
 		return nil, err
 	}
 
+	return
+}
+
+// NewCouchbaseClient create connection to Couchbase bucket
+func NewCouchbaseClient(host string, bucket_name string, password string) (cluster *gocb.Cluster, bucket *gocb.Bucket, err error) {
+	cluster, err = gocb.Connect(fmt.Sprint("couchbase://", host))
+	if err != nil {
+		return
+	}
+
+	bucket, err = cluster.OpenBucket(bucket_name, password)
 	return
 }

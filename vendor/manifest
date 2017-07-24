@@ -46,6 +46,79 @@
 			"branch": "master"
 		},
 		{
+			"importpath": "golang.org/x/net/http2",
+			"repository": "https://go.googlesource.com/net",
+			"revision": "ab5485076ff3407ad2d02db054635913f017b0ed",
+			"branch": "master",
+			"path": "/http2"
+		},
+		{
+			"importpath": "golang.org/x/net/idna",
+			"repository": "https://go.googlesource.com/net",
+			"revision": "ab5485076ff3407ad2d02db054635913f017b0ed",
+			"branch": "master",
+			"path": "/idna"
+		},
+		{
+			"importpath": "golang.org/x/net/lex/httplex",
+			"repository": "https://go.googlesource.com/net",
+			"revision": "ab5485076ff3407ad2d02db054635913f017b0ed",
+			"branch": "master",
+			"path": "/lex/httplex"
+		},
+		{
+			"importpath": "golang.org/x/text/secure/bidirule",
+			"repository": "https://go.googlesource.com/text",
+			"revision": "836efe42bb4aa16aaa17b9c155d8813d336ed720",
+			"branch": "master",
+			"path": "/secure/bidirule"
+		},
+		{
+			"importpath": "golang.org/x/text/transform",
+			"repository": "https://go.googlesource.com/text",
+			"revision": "836efe42bb4aa16aaa17b9c155d8813d336ed720",
+			"branch": "master",
+			"path": "/transform"
+		},
+		{
+			"importpath": "golang.org/x/text/unicode/bidi",
+			"repository": "https://go.googlesource.com/text",
+			"revision": "836efe42bb4aa16aaa17b9c155d8813d336ed720",
+			"branch": "master",
+			"path": "/unicode/bidi"
+		},
+		{
+			"importpath": "golang.org/x/text/unicode/norm",
+			"repository": "https://go.googlesource.com/text",
+			"revision": "836efe42bb4aa16aaa17b9c155d8813d336ed720",
+			"branch": "master",
+			"path": "/unicode/norm"
+		},
+		{
+			"importpath": "gopkg.in/couchbase/gocb.v1",
+			"repository": "https://gopkg.in/couchbase/gocb.v1",
+			"revision": "0cd63ba8b594091ea0005ec50ee21299e0b22d97",
+			"branch": "master"
+		},
+		{
+			"importpath": "gopkg.in/couchbase/gocbcore.v7",
+			"repository": "https://gopkg.in/couchbase/gocbcore.v7",
+			"revision": "6b3fcad8ac5e2212fad55e57d481cb056b99f3c0",
+			"branch": "master"
+		},
+		{
+			"importpath": "gopkg.in/couchbaselabs/gocbconnstr.v1",
+			"repository": "https://gopkg.in/couchbaselabs/gocbconnstr.v1",
+			"revision": "f601f521a1ab1c99260c63441e1bbdbbc48b1bd9",
+			"branch": "master"
+		},
+		{
+			"importpath": "gopkg.in/couchbaselabs/jsonx.v1",
+			"repository": "https://gopkg.in/couchbaselabs/jsonx.v1",
+			"revision": "5b7baa20429a46a5543ee259664cc86502738cad",
+			"branch": "master"
+		},
+		{
 			"importpath": "gopkg.in/pg.v5",
 			"repository": "https://gopkg.in/pg.v5",
 			"revision": "2246060a2a43f8282ad53295d56d780dbc930b7f",

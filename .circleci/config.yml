@@ -4,7 +4,7 @@
 version: 2
 machine:
   services:
-    - redis
+    - couchbase-server
 jobs:
   build:
     docker:
