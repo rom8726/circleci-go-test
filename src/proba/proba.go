@@ -25,7 +25,7 @@ func NewApplication() (application Application) {
 		panic(err)
 	}
 
-	_, application.Couchbase, err = NewCouchbaseClient("127.0.0.1", "default", "")
+	_, application.Couchbase, err = NewCouchbaseClient("127.0.0.1", "Administrator", "password")
 	if err != nil {
 		panic(err)
 	}
