@@ -2,10 +2,10 @@
 #
 # Check https://circleci.com/docs/2.0/language-go/ for more details
 version: 2
-machine:
-  services:
-    - couchbase-server
 jobs:
+  machine:
+    services:
+      - couchbase-server
   build:
     docker:
       # specify the version
