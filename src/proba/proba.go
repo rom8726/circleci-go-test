@@ -28,13 +28,6 @@ func NewApplication() (application Application) {
 
 func (self *Application) Start() {
 	fmt.Println("start!")
-
-	conn := self.RedisPool.Get()
-	defer conn.Close()
-	_, err := conn.Do("LPUSH", "queue", "start")
-	if err != nil {
-		panic(err)
-	}
 }
 
 func (self *Application) Close() {
@@ -48,6 +41,13 @@ func (self *Application) Close() {
 
 func (self *Application) SomeFunc() int {
 	return 3
+}
+
+func (self *Application) RedisFunc() error {
+	conn := self.RedisPool.Get()
+	defer conn.Close()
+	_, err := conn.Do("LPUSH", "queue", "start")
+	return err
 }
 
 // NewPostgreSqlClient initializes connection to database for pg.DB (models)

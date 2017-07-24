@@ -11,6 +11,15 @@ func TestApplication_SomeFunc(t *testing.T) {
 		app := NewApplication()
 		defer app.Close()
 		So(app.SomeFunc(), ShouldEqual, 3)
+	})
+}
+
+func TestApplication_RedisFunc(t *testing.T) {
+	Convey("SomeFunc() should work correctly", t, func() {
+		app := NewApplication()
+		defer app.Close()
+
+		So(app.RedisFunc(), ShouldBeNil)
 
 		conn := app.RedisPool.Get()
 		defer conn.Close()
