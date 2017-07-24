@@ -35,5 +35,6 @@ jobs:
 #      - run: gometalinter --install
       - run: gb vendor restore
       - run: gb build
+      - run: sudo service redis-server start
       #- run: go get -v -t -d ./...
       - run: GOPATH=$GOPATH:$PWD:$PWD/vendor; go test -v ./src/...
