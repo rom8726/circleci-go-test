@@ -28,6 +28,13 @@ func NewApplication() (application Application) {
 
 func (self *Application) Start() {
 	fmt.Println("start!")
+
+	conn := self.RedisPool.Get()
+	defer conn.Close()
+	_, err := conn.Do("LPUSH", "queue", "start")
+	if err != nil {
+		panic(err)
+	}
 }
 
 func (self *Application) Close() {
