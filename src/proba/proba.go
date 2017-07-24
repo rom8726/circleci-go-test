@@ -13,7 +13,7 @@ type Application struct {
 
 func NewApplication() (application Application) {
 	var err error
-	application.Database, err = NewPostgreSqlClient("127.0.0.1", 5432, "circleci", "", "proba", 2)
+	application.Database, err = NewPostgreSqlClient("127.0.0.1", 5432, "circleci", "", "circleci-go-test", 2)
 	if err != nil {
 		panic(err)
 	}
