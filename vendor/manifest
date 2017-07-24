@@ -8,6 +8,12 @@
 			"branch": "master"
 		},
 		{
+			"importpath": "github.com/jinzhu/inflection",
+			"repository": "https://github.com/jinzhu/inflection",
+			"revision": "1c35d901db3da928c72a72d8458480cc9ade058f",
+			"branch": "master"
+		},
+		{
 			"importpath": "github.com/jtolds/gls",
 			"repository": "https://github.com/jtolds/gls",
 			"revision": "77f18212c9c7edc9bd6a33d383a7b545ce62f064",
@@ -23,6 +29,12 @@
 			"importpath": "github.com/smartystreets/goconvey",
 			"repository": "https://github.com/smartystreets/goconvey",
 			"revision": "9e8dc3f972df6c8fcc0375ef492c24d0bb204857",
+			"branch": "master"
+		},
+		{
+			"importpath": "gopkg.in/pg.v5",
+			"repository": "https://gopkg.in/pg.v5",
+			"revision": "2246060a2a43f8282ad53295d56d780dbc930b7f",
 			"branch": "master"
 		}
 	]
