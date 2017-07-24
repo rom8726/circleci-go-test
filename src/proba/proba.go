@@ -6,6 +6,7 @@ import (
 	"github.com/garyburd/redigo/redis"
 	"gopkg.in/couchbase/gocb.v1"
 	"gopkg.in/pg.v5"
+	"os/exec"
 	"strconv"
 	"strings"
 )
@@ -34,7 +35,15 @@ func NewApplication() (application Application) {
 		panic(err)
 	}
 
-	application.AerospikeClient, err = NewAerospikeClient([]string{"127.0.0.1:3000"})
+	as_host_out, err := exec.Command("sh", "-c", "docker inspect -f '{{.NetworkSettings.IPAddress }}' aerospike").Output()
+	if err != nil {
+		panic(err)
+	}
+	as_host := string(as_host_out)
+	as_host = strings.Replace(as_host, "\n", "", -1)
+	fmt.Println(fmt.Sprint("Aerospike host: ", string(as_host)))
+
+	application.AerospikeClient, err = NewAerospikeClient([]string{fmt.Sprint(as_host, ":3000")})
 	if err != nil {
 		panic(err)
 	}
