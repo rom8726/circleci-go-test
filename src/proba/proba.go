@@ -7,47 +7,21 @@ import (
 	"gopkg.in/couchbase/gocb.v1"
 	"gopkg.in/pg.v5"
 	"os/exec"
-	"strconv"
 	"strings"
 )
 
+const (
+	PG_USERNAME = "circleci"
+	PG_PASSWORD = ""
+	PG_DATABASE = "circleci-go-test"
+
+	COUCHBASE_BUCKET = "test"
+)
+
 type Application struct {
-	Database        *pg.DB
-	RedisPool       *redis.Pool
-	Couchbase       *gocb.Bucket
-	AerospikeClient *aerospike.Client
 }
 
 func NewApplication() (application Application) {
-	var err error
-	application.Database, err = NewPostgreSqlClient("127.0.0.1", 5432, "circleci", "", "circleci-go-test", 2)
-	if err != nil {
-		panic(err)
-	}
-
-	application.RedisPool, err = NewRedisPool("127.0.0.1", 6379, 2)
-	if err != nil {
-		panic(err)
-	}
-
-	_, application.Couchbase, err = NewCouchbaseClient("127.0.0.1", "test", "")
-	if err != nil {
-		panic(err)
-	}
-
-	as_host_out, err := exec.Command("sh", "-c", "docker inspect -f '{{.NetworkSettings.IPAddress }}' aerospike").Output()
-	if err != nil {
-		panic(err)
-	}
-	as_host := string(as_host_out)
-	as_host = strings.Replace(as_host, "\n", "", -1)
-	fmt.Println(fmt.Sprint("Aerospike host: ", string(as_host)))
-
-	application.AerospikeClient, err = NewAerospikeClient([]string{fmt.Sprint(as_host, ":3000")})
-	if err != nil {
-		panic(err)
-	}
-
 	return
 }
 
@@ -55,38 +29,53 @@ func (self *Application) Start() {
 	fmt.Println("start!")
 }
 
-func (self *Application) Close() {
-	if self.Database != nil {
-		self.Database.Close()
-	}
-	if self.RedisPool != nil {
-		self.RedisPool.Close()
-	}
-	if self.Couchbase != nil {
-		self.Couchbase.Close()
-	}
-	if self.AerospikeClient != nil {
-		self.AerospikeClient.Close()
-	}
-}
-
 func (self *Application) SomeFunc() int {
 	return 3
 }
 
+func (self *Application) PostgreFunc() error {
+	db, err := NewPostgreSqlClient()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	// ping
+	_, err = db.Exec("SELECT 'ping'")
+	return err
+}
+
 func (self *Application) RedisFunc() error {
-	conn := self.RedisPool.Get()
+	pool, err := NewRedisPool()
+	if err != nil {
+		return err
+	}
+	defer pool.Close()
+
+	conn := pool.Get()
 	defer conn.Close()
-	_, err := conn.Do("LPUSH", "queue", "start")
+	_, err = conn.Do("LPUSH", "queue", "start")
 	return err
 }
 
 func (self *Application) CouchbaseFunc() error {
-	_, err := self.Couchbase.Upsert("test-key", "test-value", 60)
+	_, bucket, err := NewCouchbaseClient()
+	if err != nil {
+		return err
+	}
+	defer bucket.Close()
+
+	_, err = bucket.Upsert("test-key", "test-value", 60)
 	return err
 }
 
 func (self *Application) AerospikeFunc() error {
+	as_client, err := NewAerospikeClient()
+	if err != nil {
+		return err
+	}
+	defer as_client.Close()
+
 	key, err := aerospike.NewKey("test", "test", "test-key")
 	if err != nil {
 		return err
@@ -96,18 +85,18 @@ func (self *Application) AerospikeFunc() error {
 		aerospike.PutOp(aerospike.NewBin("bin2", 2)),
 		aerospike.AddOp(aerospike.NewBin("metric", 12)),
 	}
-	_, err = self.AerospikeClient.Operate(nil, key, operations...)
+	_, err = as_client.Operate(nil, key, operations...)
 	return err
 }
 
 // NewPostgreSqlClient initializes connection to database for pg.DB (models)
-func NewPostgreSqlClient(host string, port int, username string, password string, database string, max_conns int) (conn *pg.DB, err error) {
+func NewPostgreSqlClient() (conn *pg.DB, err error) {
 	conn = pg.Connect(&pg.Options{
-		PoolSize:   max_conns + 1,
-		User:       username,
-		Password:   password,
-		Database:   database,
-		Addr:       fmt.Sprintf("%s:%d", host, port),
+		PoolSize:   2,
+		User:       PG_USERNAME,
+		Password:   PG_PASSWORD,
+		Database:   PG_DATABASE,
+		Addr:       fmt.Sprintf("127.0.0.1:5432"),
 		MaxRetries: 3,
 	})
 
@@ -121,12 +110,12 @@ func NewPostgreSqlClient(host string, port int, username string, password string
 }
 
 // NewRedisPool initializes pool of connections for Redis
-func NewRedisPool(host string, port int, max_conns int) (pool *redis.Pool, err error) {
+func NewRedisPool() (pool *redis.Pool, err error) {
 	pool = &redis.Pool{
-		MaxIdle:     max_conns,
+		MaxIdle:     2,
 		IdleTimeout: 0,
 		Dial: func() (redis.Conn, error) {
-			c, err := redis.Dial("tcp", fmt.Sprintf("%s:%d", host, port), redis.DialDatabase(0))
+			c, err := redis.Dial("tcp", fmt.Sprintf("127.0.0.1:6379"), redis.DialDatabase(0))
 			if err != nil {
 				return nil, err
 			}
@@ -149,30 +138,29 @@ func NewRedisPool(host string, port int, max_conns int) (pool *redis.Pool, err e
 }
 
 // NewCouchbaseClient create connection to Couchbase bucket
-func NewCouchbaseClient(host string, bucket_name string, password string) (cluster *gocb.Cluster, bucket *gocb.Bucket, err error) {
-	cluster, err = gocb.Connect(fmt.Sprint("couchbase://", host))
+func NewCouchbaseClient() (cluster *gocb.Cluster, bucket *gocb.Bucket, err error) {
+	cluster, err = gocb.Connect("couchbase://127.0.0.1")
 	if err != nil {
 		return
 	}
 
-	bucket, err = cluster.OpenBucket(bucket_name, password)
+	bucket, err = cluster.OpenBucket(COUCHBASE_BUCKET, "")
 	return
 }
 
 // NewAerospikeClient returns new Aerospike client
-func NewAerospikeClient(nodes []string) (as_client *aerospike.Client, err error) {
-	hosts := []*aerospike.Host{}
-
-	for _, server := range nodes {
-		parts := strings.SplitN(server, ":", 2)
-		port := 3000
-		if len(parts) == 2 {
-			if port, err = strconv.Atoi(parts[1]); err != nil {
-				return
-			}
-		}
-		hosts = append(hosts, &aerospike.Host{Name: parts[0], Port: port})
+func NewAerospikeClient() (as_client *aerospike.Client, err error) {
+	as_host_out, err := exec.Command("sh", "-c", "docker inspect -f '{{.NetworkSettings.IPAddress }}' aerospike").Output()
+	if err != nil {
+		return nil, err
 	}
-	as_client, err = aerospike.NewClientWithPolicyAndHost(nil, hosts...)
+	as_host := string(as_host_out)
+	as_host = strings.Replace(as_host, "\n", "", -1)
+	fmt.Println(fmt.Sprint("Aerospike host: ", string(as_host)))
+
+	as_client, err = aerospike.NewClientWithPolicyAndHost(nil, &aerospike.Host{
+		Name: as_host,
+		Port: 3000,
+	})
 	return
 }
