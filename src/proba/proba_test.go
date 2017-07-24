@@ -9,7 +9,7 @@ import (
 func TestApplication_SomeFunc(t *testing.T) {
 	Convey("SomeFunc() should work correctly", t, func() {
 		app := NewApplication()
-		app.Close()
+		defer app.Close()
 		So(app.SomeFunc(), ShouldEqual, 3)
 
 		conn := app.RedisPool.Get()
