@@ -11,6 +11,8 @@ jobs:
       - image: arungupta/couchbase-server
       - image: aerospike/aerospike-server
       - image: spotify/kafka
+        environment:
+          TOPICS: my-topic
       - image: postgres:9.4.1
         environment:
           POSTGRES_USER: circleci
@@ -30,10 +32,20 @@ jobs:
       - checkout
 
       # specify any bash command here prefixed with `run: `
-      - run: go get github.com/constabulary/gb/...
-      - run: go get -u github.com/golang/lint/golint
-      - run: gb vendor restore
-      - run: gb build
-      - run: sh couchbase_setup.sh
-      #- run: go get -v -t -d ./...
-      - run: GOPATH=$GOPATH:$PWD:$PWD/vendor; go test -v ./src/...
+      - run:
+          name: Install gb
+          command: go get github.com/constabulary/gb/...
+      - run:
+          name: Restore vendors
+          command: gb vendor restore
+      - run:
+          name: Build project
+          command: gb build
+      - run:
+          name: Setup Couchbase
+          command: sh couchbase_setup.sh
+      - run:
+          name: Run tests
+          command: |
+            GOPATH=$GOPATH:$PWD:$PWD/vendor;
+            go test -v ./src/...
