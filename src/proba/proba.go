@@ -154,7 +154,6 @@ func NewAerospikeClient() (as_client *aerospike.Client, err error) {
 	//}
 	//as_host := string(as_host_out)
 	//as_host = strings.Replace(as_host, "\n", "", -1)
-	//as_host := os.Getenv("AEROSPIKE_HOST")
 	//fmt.Println(fmt.Sprint("Aerospike host: ", string(as_host)))
 
 	as_client, err = aerospike.NewClientWithPolicyAndHost(nil, &aerospike.Host{

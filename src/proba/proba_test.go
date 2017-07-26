@@ -1,7 +1,7 @@
 package proba
 
 import (
-	"github.com/aerospike/aerospike-client-go"
+	//"github.com/aerospike/aerospike-client-go"
 	"github.com/garyburd/redigo/redis"
 	. "github.com/smartystreets/goconvey/convey"
 	"testing"
@@ -16,8 +16,8 @@ func TestApplication_SomeFunc(t *testing.T) {
 
 func TestApplication_PostgreFunc(t *testing.T) {
 	Convey("PostgreFunc() should work correctly", t, func() {
-		//app := NewApplication()
-		//So(app.PostgreFunc(), ShouldBeNil)
+		app := NewApplication()
+		So(app.PostgreFunc(), ShouldBeNil)
 	})
 }
 
@@ -39,25 +39,25 @@ func TestApplication_RedisFunc(t *testing.T) {
 }
 
 func TestApplication_AerospikeFunc(t *testing.T) {
-	Convey("AerospikeFunc() should work correctly", t, func() {
-		app := NewApplication()
-
-		So(app.AerospikeFunc(), ShouldBeNil)
-
-		as_client, err := NewAerospikeClient()
-		So(err, ShouldBeNil)
-		defer as_client.Close()
-		key, err := aerospike.NewKey("test", "test", "test-key")
-		So(err, ShouldBeNil)
-		rec, err := as_client.Get(nil, key, "bin1", "bin2", "metric")
-		So(err, ShouldBeNil)
-		So(rec.Bins["bin1"], ShouldNotBeNil)
-		So(rec.Bins["bin2"], ShouldNotBeNil)
-		So(rec.Bins["metric"], ShouldNotBeNil)
-		So(rec.Bins["bin1"].(int), ShouldEqual, 1)
-		So(rec.Bins["bin2"].(int), ShouldEqual, 2)
-		So(rec.Bins["metric"].(int), ShouldEqual, 12)
-	})
+	//Convey("AerospikeFunc() should work correctly", t, func() {
+	//	app := NewApplication()
+	//
+	//	So(app.AerospikeFunc(), ShouldBeNil)
+	//
+	//	as_client, err := NewAerospikeClient()
+	//	So(err, ShouldBeNil)
+	//	defer as_client.Close()
+	//	key, err := aerospike.NewKey("test", "test", "test-key")
+	//	So(err, ShouldBeNil)
+	//	rec, err := as_client.Get(nil, key, "bin1", "bin2", "metric")
+	//	So(err, ShouldBeNil)
+	//	So(rec.Bins["bin1"], ShouldNotBeNil)
+	//	So(rec.Bins["bin2"], ShouldNotBeNil)
+	//	So(rec.Bins["metric"], ShouldNotBeNil)
+	//	So(rec.Bins["bin1"].(int), ShouldEqual, 1)
+	//	So(rec.Bins["bin2"].(int), ShouldEqual, 2)
+	//	So(rec.Bins["metric"].(int), ShouldEqual, 12)
+	//})
 }
 
 func TestApplication_CouchbaseFunc(t *testing.T) {
