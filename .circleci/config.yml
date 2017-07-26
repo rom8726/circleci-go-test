@@ -5,11 +5,10 @@ version: 2
 jobs:
   build:
     docker:
-      # specify the version
+      #- image: aerospike/aerospike-server
       - image: circleci/golang:1.8
       - image: redis
       - image: arungupta/couchbase-server
-      - image: aerospike/aerospike-server
       - image: postgres:9.4.1
         environment:
           POSTGRES_USER: circleci
@@ -37,9 +36,6 @@ jobs:
 
       # specify any bash command here prefixed with `run: `
       - run: go get github.com/constabulary/gb/...
-      - run: go get -u github.com/golang/lint/golint
-#      - run: go get -u github.com/alecthomas/gometalinter
-#      - run: gometalinter --install
       - run: gb vendor restore
       - run: gb build
       - run: sh couchbase_setup.sh
