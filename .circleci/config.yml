@@ -7,6 +7,14 @@ jobs:
     docker:
       # specify the version
       - image: circleci/golang:1.8
+      - image: redis
+      - image: arungupta/couchbase-server
+      - image: aerospike/aerospike-server
+      - image: spotify/kafka
+      - image: postgres:9.4.1
+        environment:
+          POSTGRES_USER: circleci
+          POSTGRES_DB: circleci-go-test
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -22,10 +30,10 @@ jobs:
       - checkout
 
       # specify any bash command here prefixed with `run: `
-      - run: go get -u github.com/golang/lint/golint
       - run: go get github.com/constabulary/gb/...
+      - run: go get -u github.com/golang/lint/golint
       - run: gb vendor restore
       - run: gb build
+      - run: sh couchbase_setup.sh
       #- run: go get -v -t -d ./...
       - run: GOPATH=$GOPATH:$PWD:$PWD/vendor; go test -v ./src/...
-      - run: golint ./src/...

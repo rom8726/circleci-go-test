@@ -2,9 +2,73 @@
 	"version": 0,
 	"dependencies": [
 		{
+			"importpath": "github.com/Shopify/sarama",
+			"repository": "https://github.com/Shopify/sarama",
+			"revision": "2fd980e23bdcbb8edeb78fc704de0c39a6567ffc",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/aerospike/aerospike-client-go",
+			"repository": "https://github.com/aerospike/aerospike-client-go",
+			"revision": "186116cc30ea117146f9bd944e5064ffb72ae4ca",
+			"branch": "master"
+		},
+		{
 			"importpath": "github.com/alecthomas/log4go",
 			"repository": "https://github.com/alecthomas/log4go",
 			"revision": "e5dc62318d9bd58682f1dceb53a4b24e8253682f",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/davecgh/go-spew/spew",
+			"repository": "https://github.com/davecgh/go-spew",
+			"revision": "adab96458c51a58dc1783b3335dcce5461522e75",
+			"branch": "master",
+			"path": "/spew"
+		},
+		{
+			"importpath": "github.com/eapache/go-resiliency/breaker",
+			"repository": "https://github.com/eapache/go-resiliency",
+			"revision": "b1fe83b5b03f624450823b751b662259ffc6af70",
+			"branch": "master",
+			"path": "/breaker"
+		},
+		{
+			"importpath": "github.com/eapache/go-xerial-snappy",
+			"repository": "https://github.com/eapache/go-xerial-snappy",
+			"revision": "bb955e01b9346ac19dc29eb16586c90ded99a98c",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/eapache/queue",
+			"repository": "https://github.com/eapache/queue",
+			"revision": "44cc805cf13205b55f69e14bcb69867d1ae92f98",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/garyburd/redigo/internal",
+			"repository": "https://github.com/garyburd/redigo",
+			"revision": "9e66b83d15a259978be267d0b61838c42c3904e3",
+			"branch": "master",
+			"path": "/internal"
+		},
+		{
+			"importpath": "github.com/garyburd/redigo/redis",
+			"repository": "https://github.com/garyburd/redigo",
+			"revision": "9e66b83d15a259978be267d0b61838c42c3904e3",
+			"branch": "master",
+			"path": "/redis"
+		},
+		{
+			"importpath": "github.com/golang/snappy",
+			"repository": "https://github.com/golang/snappy",
+			"revision": "553a641470496b2327abcac10b36396bd98e45c9",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/jinzhu/inflection",
+			"repository": "https://github.com/jinzhu/inflection",
+			"revision": "1c35d901db3da928c72a72d8458480cc9ade058f",
 			"branch": "master"
 		},
 		{
@@ -12,6 +76,32 @@
 			"repository": "https://github.com/jtolds/gls",
 			"revision": "77f18212c9c7edc9bd6a33d383a7b545ce62f064",
 			"branch": "master"
+		},
+		{
+			"importpath": "github.com/pierrec/lz4",
+			"repository": "https://github.com/pierrec/lz4",
+			"revision": "5a3d2245f97fc249850e7802e3c01fad02a1c316",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/pierrec/xxHash/xxHash32",
+			"repository": "https://github.com/pierrec/xxHash",
+			"revision": "a0006b13c722f7f12368c00a3d3c2ae8a999a0c6",
+			"branch": "master",
+			"path": "/xxHash32"
+		},
+		{
+			"importpath": "github.com/rcrowley/go-metrics",
+			"repository": "https://github.com/rcrowley/go-metrics",
+			"revision": "1f30fe9094a513ce4c700b9a54458bbb0c96996c",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/samuel/go-zookeeper/zk",
+			"repository": "https://github.com/samuel/go-zookeeper",
+			"revision": "1d7be4effb13d2d908342d349d71a284a7542693",
+			"branch": "master",
+			"path": "/zk"
 		},
 		{
 			"importpath": "github.com/smartystreets/assertions",
@@ -23,6 +113,111 @@
 			"importpath": "github.com/smartystreets/goconvey",
 			"repository": "https://github.com/smartystreets/goconvey",
 			"revision": "9e8dc3f972df6c8fcc0375ef492c24d0bb204857",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/wvanbergen/kafka/consumergroup",
+			"repository": "https://github.com/wvanbergen/kafka",
+			"revision": "bc265fedb9ff5b5c5d3c0fdcef4a819b3523d3ee",
+			"branch": "master",
+			"path": "/consumergroup"
+		},
+		{
+			"importpath": "github.com/wvanbergen/kazoo-go",
+			"repository": "https://github.com/wvanbergen/kazoo-go",
+			"revision": "968957352185472eacb69215fa3dbfcfdbac1096",
+			"branch": "master"
+		},
+		{
+			"importpath": "github.com/yuin/gopher-lua",
+			"repository": "https://github.com/yuin/gopher-lua",
+			"revision": "2243d714d6c94951d8ccca8c851836ff47d401c9",
+			"branch": "master"
+		},
+		{
+			"importpath": "golang.org/x/net/context",
+			"repository": "https://go.googlesource.com/net",
+			"revision": "ab5485076ff3407ad2d02db054635913f017b0ed",
+			"branch": "master",
+			"path": "/context"
+		},
+		{
+			"importpath": "golang.org/x/net/http2",
+			"repository": "https://go.googlesource.com/net",
+			"revision": "ab5485076ff3407ad2d02db054635913f017b0ed",
+			"branch": "master",
+			"path": "/http2"
+		},
+		{
+			"importpath": "golang.org/x/net/idna",
+			"repository": "https://go.googlesource.com/net",
+			"revision": "ab5485076ff3407ad2d02db054635913f017b0ed",
+			"branch": "master",
+			"path": "/idna"
+		},
+		{
+			"importpath": "golang.org/x/net/lex/httplex",
+			"repository": "https://go.googlesource.com/net",
+			"revision": "ab5485076ff3407ad2d02db054635913f017b0ed",
+			"branch": "master",
+			"path": "/lex/httplex"
+		},
+		{
+			"importpath": "golang.org/x/text/secure/bidirule",
+			"repository": "https://go.googlesource.com/text",
+			"revision": "836efe42bb4aa16aaa17b9c155d8813d336ed720",
+			"branch": "master",
+			"path": "/secure/bidirule"
+		},
+		{
+			"importpath": "golang.org/x/text/transform",
+			"repository": "https://go.googlesource.com/text",
+			"revision": "836efe42bb4aa16aaa17b9c155d8813d336ed720",
+			"branch": "master",
+			"path": "/transform"
+		},
+		{
+			"importpath": "golang.org/x/text/unicode/bidi",
+			"repository": "https://go.googlesource.com/text",
+			"revision": "836efe42bb4aa16aaa17b9c155d8813d336ed720",
+			"branch": "master",
+			"path": "/unicode/bidi"
+		},
+		{
+			"importpath": "golang.org/x/text/unicode/norm",
+			"repository": "https://go.googlesource.com/text",
+			"revision": "836efe42bb4aa16aaa17b9c155d8813d336ed720",
+			"branch": "master",
+			"path": "/unicode/norm"
+		},
+		{
+			"importpath": "gopkg.in/couchbase/gocb.v1",
+			"repository": "https://gopkg.in/couchbase/gocb.v1",
+			"revision": "0cd63ba8b594091ea0005ec50ee21299e0b22d97",
+			"branch": "master"
+		},
+		{
+			"importpath": "gopkg.in/couchbase/gocbcore.v7",
+			"repository": "https://gopkg.in/couchbase/gocbcore.v7",
+			"revision": "6b3fcad8ac5e2212fad55e57d481cb056b99f3c0",
+			"branch": "master"
+		},
+		{
+			"importpath": "gopkg.in/couchbaselabs/gocbconnstr.v1",
+			"repository": "https://gopkg.in/couchbaselabs/gocbconnstr.v1",
+			"revision": "f601f521a1ab1c99260c63441e1bbdbbc48b1bd9",
+			"branch": "master"
+		},
+		{
+			"importpath": "gopkg.in/couchbaselabs/jsonx.v1",
+			"repository": "https://gopkg.in/couchbaselabs/jsonx.v1",
+			"revision": "5b7baa20429a46a5543ee259664cc86502738cad",
+			"branch": "master"
+		},
+		{
+			"importpath": "gopkg.in/pg.v5",
+			"repository": "https://gopkg.in/pg.v5",
+			"revision": "2246060a2a43f8282ad53295d56d780dbc930b7f",
 			"branch": "master"
 		}
 	]
