@@ -221,7 +221,9 @@ func NewAerospikeClient() (as_client *aerospike.Client, err error) {
 	//as_host = strings.Replace(as_host, "\n", "", -1)
 	//fmt.Println(fmt.Sprint("Aerospike host: ", string(as_host)))
 
-	as_client, err = aerospike.NewClientWithPolicyAndHost(nil, &aerospike.Host{
+	policy := aerospike.NewClientPolicy()
+	policy.Timeout = time.Minute * 5
+	as_client, err = aerospike.NewClientWithPolicyAndHost(policy, &aerospike.Host{
 		Name: "172.17.0.2",
 		Port: 3000,
 	})
