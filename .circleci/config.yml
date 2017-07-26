@@ -36,6 +36,5 @@ jobs:
       - run: gb vendor restore
       - run: gb build
       - run: sh couchbase_setup.sh
-      - run: AEROSPIKE_HOST=$(sudo docker inspect -f '{{.NetworkSettings.IPAddress }}' aerospike)
       #- run: go get -v -t -d ./...
       - run: GOPATH=$GOPATH:$PWD:$PWD/vendor; go test -v ./src/...
