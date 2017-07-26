@@ -10,6 +10,7 @@ import (
 	//"strings"
 	"os/exec"
 	"strings"
+	"time"
 )
 
 const (
@@ -161,8 +162,10 @@ func NewAerospikeClient() (as_client *aerospike.Client, err error) {
 	//as_host := os.Getenv("AEROSPIKE_HOST")
 	fmt.Println(fmt.Sprint("Aerospike host: ", string(as_host)))
 
-	as_client, err = aerospike.NewClientWithPolicyAndHost(nil, &aerospike.Host{
-		Name: "127.0.0.1",
+	policy := aerospike.NewClientPolicy()
+	policy.Timeout = time.Minute
+	as_client, err = aerospike.NewClientWithPolicyAndHost(policy, &aerospike.Host{
+		Name: as_host,
 		Port: 3000,
 	})
 	return
