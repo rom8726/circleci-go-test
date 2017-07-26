@@ -28,6 +28,7 @@ jobs:
     steps:
       - checkout
 
+      - setup_remote_docker
       - run: docker run -d --name aerospike -p "3000:3000" aerospike/aerospike-server
       - run: AEROSPIKE_HOST=$(docker inspect -f '{{.NetworkSettings.IPAddress }}' aerospike)
 
