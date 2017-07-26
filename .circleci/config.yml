@@ -9,7 +9,7 @@ jobs:
       - image: circleci/golang:1.8
       - image: redis
       - image: arungupta/couchbase-server
-      - image: aerospike/aerospike-server
+#      - image: aerospike/aerospike-server
       - image: postgres:9.4.1
         environment:
           POSTGRES_USER: circleci
@@ -28,17 +28,8 @@ jobs:
     steps:
       - checkout
 
-      - setup_remote_docker
-      # use a primary image that already has Docker (recommended)
-      # or install it during a build like we do here
-      - run:
-          name: Install Docker client
-          command: |
-            set -x
-            VER="17.03.0-ce"
-            curl -L -o /tmp/docker-$VER.tgz https://get.docker.com/builds/Linux/x86_64/docker-$VER.tgz
-            tar -xz -C /tmp -f /tmp/docker-$VER.tgz
-            sudo mv /tmp/docker/* /usr/bin
+      - run: docker run -d --name aerospike -p "3000:3000" aerospike/aerospike-server
+      - run: AEROSPIKE_HOST=$(docker inspect -f '{{.NetworkSettings.IPAddress }}' aerospike)
 
       # specify any bash command here prefixed with `run: `
       - run: go get github.com/constabulary/gb/...
@@ -48,6 +39,5 @@ jobs:
       - run: gb vendor restore
       - run: gb build
       - run: sh couchbase_setup.sh
-      - run: AEROSPIKE_HOST=$(sudo docker inspect -f '{{.NetworkSettings.IPAddress }}' aerospike)
       #- run: go get -v -t -d ./...
       - run: GOPATH=$GOPATH:$PWD:$PWD/vendor; go test -v ./src/...
