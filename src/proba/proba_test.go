@@ -76,3 +76,19 @@ func TestApplication_CouchbaseFunc(t *testing.T) {
 		So(res, ShouldEqual, "test-value")
 	})
 }
+
+func TestApplication_KafkaProducerFunc(t *testing.T) {
+	Convey("KafkaProducerFunc() should work correctly", t, func() {
+		app := NewApplication()
+
+		So(app.KafkaProducerFunc(), ShouldBeNil)
+	})
+}
+
+func TestApplication_KafkaConsumerFunc(t *testing.T) {
+	Convey("KafkaConsumerFunc() should work correctly", t, func() {
+		app := NewApplication()
+
+		So(app.KafkaConsumerFunc(), ShouldBeNil)
+	})
+}

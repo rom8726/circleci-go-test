@@ -2,10 +2,13 @@ package proba
 
 import (
 	"fmt"
+	"github.com/Shopify/sarama"
 	"github.com/aerospike/aerospike-client-go"
 	"github.com/garyburd/redigo/redis"
+	"github.com/wvanbergen/kafka/consumergroup"
 	"gopkg.in/couchbase/gocb.v1"
 	"gopkg.in/pg.v5"
+	"time"
 )
 
 const (
@@ -14,6 +17,8 @@ const (
 	PG_DATABASE = "circleci-go-test"
 
 	COUCHBASE_BUCKET = "test"
+
+	KAFKA_TOPIC = "my-topic"
 )
 
 type Application struct {
@@ -85,6 +90,66 @@ func (self *Application) AerospikeFunc() error {
 	}
 	_, err = as_client.Operate(nil, key, operations...)
 	return err
+}
+
+func (self *Application) KafkaProducerFunc() error {
+	kafka_config := sarama.NewConfig()
+	kafka_config.ClientID = "KAFKA_CLIENT_ID"
+	kafka_config.Producer.Return.Successes = true
+	kafka_config.Producer.Partitioner = sarama.NewRoundRobinPartitioner
+
+	producer, err := sarama.NewSyncProducer([]string{"127.0.0.1:9092"}, kafka_config)
+	if err != nil {
+		return err
+	}
+	defer producer.Close()
+	msg := &sarama.ProducerMessage{
+		Topic: KAFKA_TOPIC,
+		Value: sarama.StringEncoder("test message"),
+	}
+	_, _, err = producer.SendMessage(msg)
+	return err
+}
+
+func (self *Application) KafkaConsumerFunc() error {
+	config := consumergroup.NewConfig()
+	config.Offsets.Initial = sarama.OffsetOldest
+	config.Offsets.ProcessingTimeout = time.Minute
+	config.Offsets.CommitInterval = time.Second
+	config.Offsets.ResetOffsets = false
+
+	consumer, err := consumergroup.JoinConsumerGroup(
+		"group_id",
+		[]string{KAFKA_TOPIC},
+		[]string{"127.0.0.1:2181"},
+		config,
+	)
+	if err != nil {
+		return err
+	}
+	if consumer.Closed() {
+		return fmt.Errorf("Kafka consumer is closed!")
+	}
+
+	var registered bool
+	registered, err = consumer.InstanceRegistered()
+	if err != nil {
+		return err
+	}
+	if !registered {
+		return fmt.Errorf("Kafka consumer is not registered!")
+	}
+
+	defer consumer.Close()
+	select {
+	case message := <-consumer.Messages():
+		fmt.Printf("Kafka message: %+v\n", message)
+		break
+	default:
+		break
+	}
+
+	return nil
 }
 
 // NewPostgreSqlClient initializes connection to database for pg.DB (models)
