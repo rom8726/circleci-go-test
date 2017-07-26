@@ -12,7 +12,7 @@ jobs:
       - image: aerospike/aerospike-server
       - image: spotify/kafka
         environment:
-          TOPICS: my-topic
+          TOPICS: my-topic,second-topic
       - image: postgres:9.4.1
         environment:
           POSTGRES_USER: circleci
