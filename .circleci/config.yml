@@ -9,7 +9,7 @@ jobs:
       - image: circleci/golang:1.8
       - image: redis
       - image: arungupta/couchbase-server
-#      - image: aerospike/aerospike-server
+      - image: aerospike/aerospike-server
       - image: postgres:9.4.1
         environment:
           POSTGRES_USER: circleci
@@ -30,7 +30,7 @@ jobs:
 
       - setup_remote_docker
       - run:
-          name: Install Aerospike
+          name: Run Aerospike and get host
           command: |
             docker run -d --name aerospike -p "3000:3000" aerospike/aerospike-server
             echo "Aerospike host: $(docker inspect -f '{{.NetworkSettings.IPAddress }}' aerospike)"
